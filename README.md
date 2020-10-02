@@ -1,2 +1,3 @@
-# robot_localization
-This is the base repo for the Olin Computational Robotics Robot Localization project
+https://arxiv.org/pdf/1309.7807.pdf
+
+https://www.stats.ox.ac.uk/~doucet/doucet_johansen_tutorialPF2011.pdf
