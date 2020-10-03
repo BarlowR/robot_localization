@@ -2,7 +2,7 @@
 
 #### Overview & Resources
 
-As the second project for the Olin course, Introduction to Computational Robotics, I plan to implement a particle filter to localize a Neato robot inside of a given map using lidar data. The particle filter will be implemented as described in Section 3, "The basic particle filter," of Kunsch et. all, 2013. 
+As the second project for the Olin course, Introduction to Computational Robotics, I plan to implement a particle filter to localize a Neato robot inside of a given map using lidar data. The particle filter will be implemented as described in Section 3, "The basic particle filter," of Kunsch et. all, 2013. I plan to write this program without scaffolding. 
 
 #### Extensions
 
