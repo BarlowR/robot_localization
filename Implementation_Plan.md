@@ -18,47 +18,83 @@ If I have time to work beyond the basic particle filter, my first extension will
 4. Select the particle with the highest weight to represent the pose of the Neato.
 
 
-## Required Objects
+## Objects
 
 ### Map
 #### Overview
 Handles the provided environmental map and provides functionality for making a likelihood map & drawing values from that map
-#### Properties
-**OccupancyGrid map**
-The given map of the area
-**OccupancyGrid likelihood_map**
-The likelyhood map of the area
+#### Attributes
+**OccupancyGrid map:** The given map of the area 
+
+**OccupancyGrid likelihood_field:** The likelyhood field of the area 
 
 #### Methods
 ##### init (OccupancyGrid map_file)
-map_file is the representation of the map in ROS's nav_msgs/OccupancyGrid.msg
-
-This function creates the likelihood map by convolving the map grid with a gaussian kernel. 
+* map_file is the representation of the map in ROS's nav_msgs/OccupancyGrid.msg
+* This function creates the likelihood field by convolving the map occupancy image with a gaussian kernel. 
 
 ##### probability_draw (Tuple pose, Float32 dist)
-pose is 3 Float values, which correspond to (x, y, ang) where x and y are position in map units and ang is angle in radians, with 0 pointing up and pi/2 pointing to the right. 
-dist is a laser range value. 
+* pose is 3 Float values, which correspond to (x, y, ang) where x and y are position in map units and ang is angle in radians, with 0 pointing up and pi/2 pointing to the right. 
+* dist is a laser range value. 
+* returns a single Float value corresponding to the probability of the laser range arguement given the pose arguement & occupancy field. See image below:
 
-returns a single Float value corresponding to the probability of the laser range arguement given the pose arguement & occupancy field. See image below:
-
+<img src = "https://github.com/BarlowR/robot_localization/blob/master/Likelihood%20Field.png" width = "500">
 
 
 
 ### Neato
 #### Overview
 Subscribes to neato topics and maintains a short history of sensor & odom readings. 
-class variables: 
+
+#### Attributes
 #### Methods
 ##### init ()
+##### update ()
 
-##### update
 
-#### Particle
+
+### ParticleFilter
 #### Overview
-A particle object for the particle filter 
-class variables: 
+The particle filter
+
+#### Attributes
+**Neato neat:** A neato robot object 
+**Map m:** A map object
+**Float certainty:** A measure of the certainty of the particle filter. Begins at 1, and decreases with higher certainty according to 1/(1 + Σ (particle weights)) 
+**Particle[] particles:** A list containing all of the particles within the filter. 
+**Particle best_estimation:** The particle with the highest positional certainty
+
+#### Subclasses
+
+#### Particle 
+##### Overview
+A particle object
+##### Attributes
+**Float[] pose [x, y, theta]:** The particle's position in map units & coordinate frame.
+**Float weight:** The weight of the particle. 0 is complete uncertainty, 1 is absolute certainty.
+
+##### Methods
+###### initialize(Tuple pose_init)
+* Tuple pose_init: the pose at which to initialize the particle
+* Initializes a new particle at pose_init
+
+###### update_pose(Tuple delta_pose)
+* Tuple delta_pose: changes in neato pose (x, y and theta) from the baselink coordinate system.
+* Updates the pose property based on the delta_pose arguement  
+
+###### random_noise()
+* Adds random noise to pose from a gaussian distribution with magnitude determined by the certainty property of the ParticleFilter
+
+
 #### Methods
-##### init(
+##### init(Int n, Tuple bounds)
+* Int n: number of particles to initialize
+* Tuple bounds: (x1, x2, y1, y2) distances from the origin to the right, left, top and bottom bounds of the rectangle in qhich to initialize particles
+* Initializes n particles into the particles array attribute
+
+##### resample(Int n)
+* Int n: number of particles to resample
+* Resamples n new particles from the current set of particles using a [stochastic universal sampling method](https://www.youtube.com/watch?v=tvNPidFMY20)
 
 
 Kunsch et. all, 2013. https://arxiv.org/pdf/1309.7807.pdf
