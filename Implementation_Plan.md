@@ -66,10 +66,6 @@ Subscribes to neato topics and calculates pose information
 The particle filter
 
 #### Attributes
-* Neato neat: A neato robot object 
-
-* Map m: A map object
-
 * Float certainty: A measure of the certainty of the particle filter. Begins at 1, and decreases with higher certainty according to 1/(1 + Σ (particle weights))
 
 * Particle[] particles: A list containing all of the particles within the filter. 
