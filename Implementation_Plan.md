@@ -77,6 +77,16 @@ The particle filter
 * Particle best_estimation: The particle with the highest positional certainty
 
 
+#### Methods
+* init(Int n, Tuple bounds)
+    * Int n: number of particles to initialize
+    * Tuple bounds: (x1, x2, y1, y2) distances from the origin to the right, left, top and bottom bounds of the rectangle in qhich to initialize particles
+    * Initializes n particles into the particles array attribute
+
+* resample(Int n)
+    * Int n: number of particles to resample
+    * Resamples n new particles from the current set of particles using a [stochastic universal sampling method](https://www.youtube.com/watch?v=tvNPidFMY20)
+
 #### Subclasses
 
 #### Particle 
@@ -97,16 +107,5 @@ A particle object
 
 * random_noise()
     * Adds random noise to pose from a gaussian distribution with magnitude determined by the certainty property of the ParticleFilter
-
-
-#### Methods
-* init(Int n, Tuple bounds)
-    * Int n: number of particles to initialize
-    * Tuple bounds: (x1, x2, y1, y2) distances from the origin to the right, left, top and bottom bounds of the rectangle in qhich to initialize particles
-    * Initializes n particles into the particles array attribute
-
-* resample(Int n)
-    * Int n: number of particles to resample
-    * Resamples n new particles from the current set of particles using a [stochastic universal sampling method](https://www.youtube.com/watch?v=tvNPidFMY20)
 
 
