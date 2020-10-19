@@ -2,11 +2,11 @@
 
 ## Overview & Resources
 
-As the second project for the Olin course, Introduction to Computational Robotics, I plan to implement a particle filter to localize a Neato robot inside of a given map using lidar data. The particle filter will be implemented as described in Section 3, "The basic particle filter," of [Kunsch et. all, 2013](Kunsch et. all, 2013. https://arxiv.org/pdf/1309.7807.pdf). I plan to write this program without scaffolding. 
+As the second project for the Olin course, Introduction to Computational Robotics, I plan to implement a particle filter to localize a Neato robot inside of a given map using lidar data. The particle filter will be implemented as described in Section 3, "The basic particle filter," of [Kunsch et. all, 2013](https://arxiv.org/pdf/1309.7807.pdf). I plan to write this program without scaffolding. 
 
 ## Extensions
 
-If I have time to work beyond the basic particle filter, my first extension will be the implementation of a balanced resampling scheme and the omission of resampling when weights are sufficiently uniform. [Section 3.4 of Kunsch et. all](Kunsch et. all, 2013. https://arxiv.org/pdf/1309.7807.pdf) describes these improvements in further detail. After this, I plan to create a metric of computation time availability and write a function that dynamically alters the number of particle samples based on this metric, to ensure that this filter can be used to the limit of its precision within the computational bottleneck.
+If I have time to work beyond the basic particle filter, my first extension will be the implementation of a balanced resampling scheme and the omission of resampling when weights are sufficiently uniform. [Section 3.4 of Kunsch et. all](https://arxiv.org/pdf/1309.7807.pdf) describes these improvements in further detail. After this, I plan to create a metric of computation time availability and write a function that dynamically alters the number of particle samples based on this metric, to ensure that this filter can be used to the limit of its precision within the computational bottleneck.
 
 
 ## Filtering Cycle Steps
