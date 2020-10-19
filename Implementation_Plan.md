@@ -2,11 +2,11 @@
 
 ## Overview & Resources
 
-As the second project for the Olin course, Introduction to Computational Robotics, I plan to implement a particle filter to localize a Neato robot inside of a given map using lidar data. The particle filter will be implemented as described in Section 3, "The basic particle filter," of Kunsch et. all, 2013. I plan to write this program without scaffolding. 
+As the second project for the Olin course, Introduction to Computational Robotics, I plan to implement a particle filter to localize a Neato robot inside of a given map using lidar data. The particle filter will be implemented as described in Section 3, "The basic particle filter," of [Kunsch et. all, 2013](Kunsch et. all, 2013. https://arxiv.org/pdf/1309.7807.pdf). I plan to write this program without scaffolding. 
 
 ## Extensions
 
-If I have time to work beyond the basic particle filter, my first extension will be the implementation of a balanced resampling scheme and the omission of resampling when weights are sufficiently uniform. Section 3.4 of Kunsch et. all describes these improvements in further detail. After this, I plan to create a metric of computation time availability and write a function that dynamically alters the number of particle samples based on this metric, to ensure that this filter can be used to the limit of its precision within the computational bottleneck.
+If I have time to work beyond the basic particle filter, my first extension will be the implementation of a balanced resampling scheme and the omission of resampling when weights are sufficiently uniform. [Section 3.4 of Kunsch et. all](Kunsch et. all, 2013. https://arxiv.org/pdf/1309.7807.pdf) describes these improvements in further detail. After this, I plan to create a metric of computation time availability and write a function that dynamically alters the number of particle samples based on this metric, to ensure that this filter can be used to the limit of its precision within the computational bottleneck.
 
 
 ## Filtering Cycle Steps
@@ -24,19 +24,19 @@ If I have time to work beyond the basic particle filter, my first extension will
 #### Overview
 Handles the provided environmental map and provides functionality for making a likelihood map & drawing values from that map
 #### Attributes
-**OccupancyGrid map:** The given map of the area 
+* OccupancyGrid map: The given map of the area 
 
-**OccupancyGrid likelihood_field:** The likelyhood field of the area 
+* OccupancyGrid likelihood_field: The likelyhood field of the area 
 
 #### Methods
-##### init (OccupancyGrid map_file)
-* map_file is the representation of the map in ROS's nav_msgs/OccupancyGrid.msg
-* This function creates the likelihood field by convolving the map occupancy image with a gaussian kernel. 
+* init (OccupancyGrid map_file)
+    * map_file is the representation of the map in ROS's nav_msgs/OccupancyGrid.msg
+    * This function creates the likelihood field by convolving the map occupancy image with a gaussian kernel. 
 
-##### probability_draw (Tuple pose, Float32 dist)
-* pose is 3 Float values, which correspond to (x, y, ang) where x and y are position in map units and ang is angle in radians, with 0 pointing up and pi/2 pointing to the right. 
-* dist is a laser range value. 
-* returns a single Float value corresponding to the probability of the laser range arguement given the pose arguement & occupancy field. See image below:
+* probability_draw (Tuple pose, Float32 dist)
+    * pose is 3 Float values, which correspond to (x, y, ang) where x and y are position in map units and ang is angle in radians, with 0 pointing up and pi/2 pointing to the right. 
+    * dist is a laser range value. 
+    * returns a single Float value corresponding to the probability of the laser range arguement given the pose arguement & occupancy field. See image below:
 
 <img src = "https://github.com/BarlowR/robot_localization/blob/master/Likelihood%20Field.png" width = "500">
 
@@ -44,12 +44,20 @@ Handles the provided environmental map and provides functionality for making a l
 
 ### Neato
 #### Overview
-Subscribes to neato topics and maintains a short history of sensor & odom readings. 
+Subscribes to neato topics and calculates pose information
 
 #### Attributes
+* Float[] delta_pose: Change in neato position between last 2 update calls (baselink frame)
+* Float32[] laser_scan: Latest Laser scan published to ROS
+* Float32[] laser_scan_update: Laser scan data at time of last update call 
+* ros::Time previous_update_time ROS time of the second most recent update call
+* ros::Time current_update_time: ROS time of the most recent update call
+
 #### Methods
-##### init ()
-##### update ()
+* init ()
+    * Initialized node & subscribes to Neato's Laser scans
+* update ()
+    * Sets laser_scan_update to be equal to laser_scan, updates current_update_call/previous_update_call, and calculates delta_pose using tf2
 
 
 
@@ -102,4 +110,3 @@ A particle object
     * Resamples n new particles from the current set of particles using a [stochastic universal sampling method](https://www.youtube.com/watch?v=tvNPidFMY20)
 
 
-Kunsch et. all, 2013. https://arxiv.org/pdf/1309.7807.pdf
