@@ -58,11 +58,16 @@ Subscribes to neato topics and maintains a short history of sensor & odom readin
 The particle filter
 
 #### Attributes
-**Neato neat:** A neato robot object 
-**Map m:** A map object
-**Float certainty:** A measure of the certainty of the particle filter. Begins at 1, and decreases with higher certainty according to 1/(1 + Σ (particle weights)) 
-**Particle[] particles:** A list containing all of the particles within the filter. 
-**Particle best_estimation:** The particle with the highest positional certainty
+* Neato neat: A neato robot object 
+
+* Map m: A map object
+
+* Float certainty: A measure of the certainty of the particle filter. Begins at 1, and decreases with higher certainty according to 1/(1 + Σ (particle weights))
+
+* Particle[] particles: A list containing all of the particles within the filter. 
+
+* Particle best_estimation: The particle with the highest positional certainty
+
 
 #### Subclasses
 
@@ -70,31 +75,31 @@ The particle filter
 ##### Overview
 A particle object
 ##### Attributes
-**Float[] pose [x, y, theta]:** The particle's position in map units & coordinate frame.
-**Float weight:** The weight of the particle. 0 is complete uncertainty, 1 is absolute certainty.
+* Float[] pose [x, y, theta]: The particle's position in map units & coordinate frame.
+* Float weight: The weight of the particle. 0 is complete uncertainty, 1 is absolute certainty.
 
 ##### Methods
-###### initialize(Tuple pose_init)
-* Tuple pose_init: the pose at which to initialize the particle
-* Initializes a new particle at pose_init
+* initialize(Tuple pose_init)
+    * Tuple pose_init: the pose at which to initialize the particle
+    * Initializes a new particle at pose_init
 
-###### update_pose(Tuple delta_pose)
-* Tuple delta_pose: changes in neato pose (x, y and theta) from the baselink coordinate system.
-* Updates the pose property based on the delta_pose arguement  
+* update_pose(Tuple delta_pose)
+    * Tuple delta_pose: changes in neato pose (x, y and theta) from the baselink coordinate system.
+    * Updates the pose property based on the delta_pose arguement  
 
-###### random_noise()
-* Adds random noise to pose from a gaussian distribution with magnitude determined by the certainty property of the ParticleFilter
+* random_noise()
+    * Adds random noise to pose from a gaussian distribution with magnitude determined by the certainty property of the ParticleFilter
 
 
 #### Methods
-##### init(Int n, Tuple bounds)
-* Int n: number of particles to initialize
-* Tuple bounds: (x1, x2, y1, y2) distances from the origin to the right, left, top and bottom bounds of the rectangle in qhich to initialize particles
-* Initializes n particles into the particles array attribute
+* init(Int n, Tuple bounds)
+    * Int n: number of particles to initialize
+    * Tuple bounds: (x1, x2, y1, y2) distances from the origin to the right, left, top and bottom bounds of the rectangle in qhich to initialize particles
+    * Initializes n particles into the particles array attribute
 
-##### resample(Int n)
-* Int n: number of particles to resample
-* Resamples n new particles from the current set of particles using a [stochastic universal sampling method](https://www.youtube.com/watch?v=tvNPidFMY20)
+* resample(Int n)
+    * Int n: number of particles to resample
+    * Resamples n new particles from the current set of particles using a [stochastic universal sampling method](https://www.youtube.com/watch?v=tvNPidFMY20)
 
 
 Kunsch et. all, 2013. https://arxiv.org/pdf/1309.7807.pdf
