@@ -2,7 +2,6 @@
     of a robot pose. """
 
 import rospy
-from nav_msgs.srv import GetMap
 
 from std_msgs.msg import Header
 from geometry_msgs.msg import PoseStamped, Pose, Point, Quaternion
