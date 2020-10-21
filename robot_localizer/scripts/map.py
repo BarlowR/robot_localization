@@ -26,7 +26,7 @@ class Map(object):
         self.likelihood_field = np.zeros((map_array.shape))
         
         #convolve map with gaussian-like kernel to get a laser scan likelihood field, and normalize the resulting array. The result is padded with zeros around the edges to maitain an array with the same size as the original
-        kernel_px_size = 31
+        kernel_px_size = 11
         likelihood_field_offset = int((kernel_px_size-1)/2)
         kernel = self.gaussian(kernel_px_size, .5,.2)
         
@@ -39,24 +39,25 @@ class Map(object):
 
         self.likelihood_field[likelihood_field_offset:end_index_x, likelihood_field_offset:end_index_y] = convolved # Inserts the convolved array into an array of zeros in the correct position so that it lines back up with the map coordinate frame
 
-        
+            
 
-        self.plot_probability_draw((14.9, 6, 0),)
 
     
     def probability_draw(self, pose, dist):
-        # pose is x, y in the map coordinate frame & units and ang in radians, with 0 pointing up and pi/2 pointing to the right
+        # pose is x, y in the map coordinate frame & units and ang in radians, with 0 pointing to the right and pi/2 pointing down
         # dist is the laser range distance in meters. Inf is a valid arguement. 
 
         if (dist == "Inf"):
             return 0.4
+        if (dist < 0.1):
+            return 0
         else:
             x, y, ang = pose
             x_pose_pixels = int(x/self.map.info.resolution)
             y_pose_pixels = int(y/self.map.info.resolution)
 
-            x_scan = (dist*np.sin(ang)) + x
-            y_scan = (dist*np.cos(ang)) + y
+            x_scan = (dist*np.cos(ang)) + x
+            y_scan = (dist*np.sin(ang)) + y
 
             x_scan_pixels = int(x_scan/self.map.info.resolution)
             y_scan_pixels = int(y_scan/self.map.info.resolution)
@@ -69,8 +70,9 @@ class Map(object):
             plt.scatter(x_scan_pixels, y_scan_pixels, color="green")
             plt.show()
             '''
-
-            return self.likelihood_field[y_scan_pixels][x_scan_pixels]
+            if (y_scan_pixels < self.map.info.width and x_scan_pixels < self.map.info.height):
+                return self.likelihood_field[y_scan_pixels][x_scan_pixels]
+            else: return 0
 
 
     def plot_probability_draw(self, pose):
@@ -87,8 +89,8 @@ class Map(object):
         for i in np.arange(0.2, 6, 0.01):
             axarr[1].scatter(i, self.probability_draw((x, y, ang), i), s = 0.3, color = (1,0,0,1))
 
-            x_scan = (i*np.sin(ang)) + x
-            y_scan = (i*np.cos(ang)) + y
+            x_scan = (i*np.cos(ang)) + x
+            y_scan = (i*np.sin(ang)) + y
 
             x_scan_pixels = int(x_scan/self.map.info.resolution)
             y_scan_pixels = int(y_scan/self.map.info.resolution)
@@ -139,3 +141,4 @@ class Map(object):
 
 if __name__ == '__main__':
     m = Map()
+    m.plot_probability_draw((16.289163063732026, 3.6998839364401728, 0.4136842711695055),)
