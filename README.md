@@ -72,11 +72,6 @@ The main loop of this program is quite simple; at each timestep, the following i
 * The particles are resampled with ParticleFilter.resample()
 * Finally, all particles are published as a PoseArray for visualization with RViz.
 
-## Final Notes
-
-### Challenges
-I had a bit of trouble initially working out the transforms between the map frame, the particles and the neato. I think this was in part due to me initially defining theta = 0 to be pointing from the origin to (0,1). After I went back and fixed that convention to theta=0 points to (1,0) everywhere in my code, I had a lot less trouble fixing the tranformation bugs.
-
-### Future Improvements
+## Challenges & Future Improvements
 
 There seem to be a lot of knobs to turn in this particle filter, from number of particle to resampling rate to noise magnitude, and on and on. I'd like to spend more time playing with the implementation to determine the effect of each one, and how they can work together to create a faster/more robust system.  I'd also still like to implement a way to dynamically alter the number of particles in the filter; I have the ability to resample any number of particles, but I didn't have the time to determine how best to control this number.
